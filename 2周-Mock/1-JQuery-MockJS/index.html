@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/Mock.js/1.0.1-beta3/mock.js"></script>
+</head>
+<body>
+  数量<input id="input" type="text" style="margin: 10px 10px;">
+  <button id="btn">点击</button>
+  <hr />
+  <div></div>
+  
+  <script>
+    $('#btn').click(function () {
+
+      const val = $('#input').val();
+
+      $.ajax({
+        url: "http://sunshine.com/getList",
+        type: "get",
+        dataType: "json",
+        data: {
+          num: val
+        }
+      }).done(function (data) {
+        $('div').html(JSON.stringify(data))
+      })
+    })
+
+    /**
+     * 使用正则匹配带有参数的url；
+     * options对象中包含url，type，body；
+     * 返回值类型：
+     *    1.模板数据 template
+     *    2.函数返回值
+     */
+    Mock.mock(/\/sunshine.com\/getList/, function(options){
+      // 获取url参数num
+      const num = getParam(options.url, 'num')
+
+      // 扩展mock数据
+      const answer = ["七月流火", "一眼万年", "人间四月"]
+
+      var res = {
+        status: 200,
+        msg: "返回mock数据",
+        ["data|" + num]: [{
+          "tid|+1": 1,
+          title: "@double(3,5)",
+          catalog: "index",
+          created: "@date",
+          "isEnd|0-1": 1,
+          "answer|1": answer,
+          user: {
+            avatar: "@image(80*80)",
+            name: "@name",
+            "isVip|0-1": 0,
+            "level|0-4": 0,
+          }
+
+        }]
+      }
+      return Mock.mock(res)
+    })
+
+    // 获取url中的参数信息
+    function getParam(url, num){
+      var reg = new RegExp("(^|&)" + num + "=([^&]*)(&|$)");
+      var r = new URL(url).search.substr(1).match(reg);
+      if (r != null) 
+        return unescape(r[2]); 
+      return null;
+    }
+  </script>
+</body>
+</html>

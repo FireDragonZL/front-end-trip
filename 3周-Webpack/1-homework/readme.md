@@ -2,7 +2,7 @@
 
 本工程用于练习 css，图片，字体等非JS资源文件的加载。相关配置如下：
 
-```json
+```javascript
 const config = {
   // 入口文件
   entry: {
@@ -45,4 +45,4 @@ const config = {
 
 效果图如下：
 
-![1588686360008](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1588686360008.png)
+![001](C:\Users\Administrator\Desktop\001.PNG)

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第二周：Mock练习</title>
+  <!-- 引入react：react的核心库 -->
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <!-- 引入react-dom：操作DOM的react的扩展库 -->
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+  <!-- 引入Babel,使浏览器可以识别JSX语法，如果不使用JSX语法，可以不引入：将JSX语法代码转为纯JS语法代码的库 -->
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    class App extends React.Component {
+      constructor(props){
+        super(props)
+        this.state = {
+          val: "返回数据响应页面"
+        }
+      }
+
+      handleClick = () => {
+        console.log("输入值为===",this.input.value)
+        fetch("http://localhost:36742/get")
+        .then((res) => {
+          return res.json()
+        })
+        .then((data) => {
+          console.log("data===", data.data)
+          this.setState({
+            val: JSON.stringify(data.data)
+          })
+        })
+      }
+
+      render(){
+        console.log("state===", this.state.val)
+        return(
+          <div>
+            数量<input type="text" ref={inputVal => this.input = inputVal} />
+            <button onClick={this.handleClick}>点击</button>
+            <hr />
+            <div>{this.state.val}</div>
+          </div>
+        )
+      }
+    }
+
+    ReactDOM.render(<App />, document.getElementById("root"))
+  </script>
+</body>
+</html>

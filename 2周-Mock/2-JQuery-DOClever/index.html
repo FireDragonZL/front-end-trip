@@ -4,8 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>第二周：DOClever平台mock使用</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.js"></script>
 </head>
 <body>
-  
+  数量<input id="input" type="text" />
+  <button id="btn">点击</button>
+  <hr />
+  <div></div>
+  <script>
+    $("#btn").click(function(){
+
+      const val = $("#input").val()
+      console.log("响应成功。。。1")
+
+      $.ajax({
+        url: "http://localhost:36742/get",
+        type: "get",
+        dataType: "json",
+        data: {
+          num: val
+        }
+      }).done(function(data){
+        console.log("响应成功。。。2")
+        $("div").html(JSON.stringify(data))
+      })
+    })
+  </script>
 </body>
 </html>

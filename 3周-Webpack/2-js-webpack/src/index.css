@@ -1,12 +1,12 @@
-@font-face {
-  font-family: "my-font";
-  src: url("./font/fa-brands-400.woff2") format('woff2');
-}
-
 body {
   background: url("./static/001.jpg");
 }
 h2 {
   font-family: "my-font";
   color: red;
+}
+
+@font-face {
+  font-family: "my-font";
+  src: url("./font/fa-brands-400.woff2") format('woff2');
 }

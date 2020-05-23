@@ -61,7 +61,6 @@ router.post('/user', async ctx => {
       "msg": "request params is not correct"
     }
   }
-  
 })
 
 // 引入插件，接收响应信息 + 跨域处理

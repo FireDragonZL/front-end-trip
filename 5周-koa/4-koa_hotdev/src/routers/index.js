@@ -1,7 +1,10 @@
-const combineRouters = require("koa-combine-routers");
-const dogRouter = require('./dogRouter')
-const catRouter = require('./catRouter')
+import combineRouters from "koa-combine-routers"
 
-const router = combineRouters(dogRouter, catRouter);
+import controllerRouter from './controllerRouter'
 
-module.exports = router;
+// 将多个路由组件整合在一起
+const router = combineRouters(
+  controllerRouter
+);
+
+export default router;

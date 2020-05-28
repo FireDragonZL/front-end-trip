@@ -10,20 +10,26 @@ const response = require('./component/response')
  * 3. ctx上下文对象，挂载req和res
  */
 class Koa {
+  // 初始化的时候构建一个函数数组
+  constructor(){
+    this.middllewares = []
+  }
 
-  // use方法
-  use(callback){
-    // 将函数callback挂载到当前类对象this上
-    this.callback = callback
+  // use方法 - 传入异步中间件
+  use(middleware){
+    // 将中间件挂载到函数数组中
+    this.middllewares.push(middleware)
   }
 
   // listen方法
   listen(...args){
-    const server = http.createServer((req, res) => {
+    const server = http.createServer(async (req, res) => {
       // 创建上下文对象，挂载req + res
       const ctx = this.createCtx(req, res)
       // 回调传入的函数
-      this.callback(ctx)
+      const func_tmp = this.compose(this.middllewares)
+      // 等待一个Promise对象
+      await func_tmp(ctx)
       // 响应信息（调用上下文对象的getter方法）
       res.end(ctx.body)
     })
@@ -42,6 +48,26 @@ class Koa {
     ctx.response = res
     
     return ctx
+  }
+
+  // 组合函数 - 返回一个函数对象
+  compose(middlewares) {
+    return function (ctx) {
+      return dispatch(0)
+
+      function dispatch(num) {
+        let func = middlewares[num]
+        if (!func) {
+          // 向上返回一个promise对象
+          return Promise.resolve()
+        }
+        return Promise.resolve(
+          func(ctx, function () {
+            return dispatch(num + 1)
+          })
+        )
+      }
+    }
   }
 }
 
